@@ -25,6 +25,10 @@ body {
     font-weight: 300
 }
 
+.container{
+    max-width:90% !important;
+}
+
 .overlay {
     position: absolute;
     height: 100%;
@@ -114,6 +118,36 @@ body {
 .input {
     font-weight: 300!important
 }
+
+.navbar {
+    z-index: 100;
+    position: fixed;
+}
+
+.navbar-toggler {
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    background-color: rgba(0,46,102,.8);
+    color: #fff !important;
+    top: 40px;
+    right: 40px;
+    position: fixed;
+}
+
+#menu-box{
+    text-align: center;
+    position:fixed;
+    top:100px;
+    right:40px;
+}
+
+#menu-box a{
+     color: rgba(0,46,102,.8);
+     font-size: 16px;
+     font-weight: 700;
+}
+
 @media (min-width:950px){
     .masthead .masthead-bg {
         transform: skewX(-8deg);
@@ -172,6 +206,35 @@ body {
     .social-icons ul>li>a:hover {
         background-color: #002e66
     }
+}
+
+@media (max-width:767px) {
+    .navbar{
+        padding:0px;
+        position:relative;
+        z-index: auto;
+    }
+
+    #menu-box{
+    text-align: left;
+    position:relative;
+    z-index:auto;
+    top:0px;
+    right:0px;
+    background-color: rgba(49,69,108,1);
+    padding:20px;
+    width:100%;
+    border-radius:0%;
+}
+
+.navbar-toggler{
+    z-index:100000;
+}
+#menu-box a{
+     color: #fff;
+     font-size: 16px;
+     font-weight: 700;
+}
 }
 
 
