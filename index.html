@@ -1,20 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Trivia Game</title>
-</head>
-<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-<body>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Trivia Game</title>
+	</head>
 
-	
-	
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-	<script src="assets/javascript/app.js"></script>
-</body>
-</html>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<!-- Custom fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<body>
+		
+		<div class="clock"></div>
+		<div class="overlay"></div>
+
+		<div class="masthead">
+			<div class="masthead-bg"></div>
+			<div class="container h-100">
+				<div class="row h-100">
+					<div class="col-lg-8 col-md-7 col-sm-12 my-auto">
+						<div class="masthead-content text-white py-5 py-md-0">
+							<h1 class="mb-3">Trivia Game</h1>
+							<p>This game pulls questions from the open-sourced opentdb.com api.</p>
+							<hr>
+							<h3 class="mb-5">Categories: <select>
+								<option value="">Oops! Something's up... We're on it. </option>
+								<option value="hurr">Durr</option>
+							</select></h3>
+							<div class="input-group input-group-newsletter">
+								<span class="input-group-btn">
+									<button class="btn btn-secondary" type="button">Play!</button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-5 col-sm-12my-auto">............................</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="social-icons">
+			<ul class="list-unstyled text-center mb-0">
+				<li class="list-unstyled-item">
+					<a href="#">
+						<i class="fa fa-github" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li class="list-unstyled-item">
+					<a href="#">
+						<i class="fa fa-stack-overflow" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li class="list-unstyled-item">
+					<a href="#">
+						<i class="fa fa-linkedin" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		
+		
+		<!--Bootstrap JS-->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		<!--Custom JS-->
+		<script src="assets/javascript/app.js"></script>
+	</body>
+	</html>
