@@ -1,10 +1,12 @@
 /*!
+ * Initial template inspiration drawn from: 
  * Start Bootstrap - Coming Soon v4.0.0-beta.2 (https://startbootstrap.com/template-overviews/coming-soon)
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-coming-soon/blob/master/LICENSE)
+ * Further developed / adapted by Caitlin Everett Dec 23-24 2017
  */
 
-html {
+ html {
     height: 100%
 }
 
@@ -29,13 +31,27 @@ body {
     max-width:90% !important;
 }
 
+.clock {
+    position: absolute;
+    display:none;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    opacity: .75;
+    z-index: -1;
+    font-size: 300px;
+    font-color: rgba(0, 46, 102, .62);
+    font-weight: 800;
+    padding:10%;
+}
+
 .overlay {
     position: absolute;
     height: 100%;
     width: 100%;
     background-color: #cd9557;
     opacity: .75;
-    z-index: -1
+    z-index: -2
 }
 
 .masthead {
@@ -52,7 +68,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 46, 102, .8);
+    background-color: rgba(0, 46, 102, .62);
     transform: skewY(4deg);
     transform-origin: bottom right
 }
@@ -135,24 +151,37 @@ body {
     position: fixed;
 }
 
+.navbar-toggler:hover {
+    background-color: #002e66!important;
+    border-color: #002e66!important
+}
+
 #menu-box{
-    text-align: center;
+    text-align: right;
     position:fixed;
     top:100px;
     right:40px;
 }
 
 #menu-box a{
-     color: rgba(0,46,102,.8);
-     font-size: 16px;
-     font-weight: 700;
+   color: rgba(0,46,102,.8);
+   font-size: 20px;
+   font-weight: 900;
 }
+
+/*.nav-text{
+   color: rgba(0,46,102,.8);
+   line-height:40px;
+   font-size: 20px;
+   font-weight: 900;
+   text-decoration:underline;
+}*/
 
 @media (min-width:950px){
     .masthead .masthead-bg {
         transform: skewX(-8deg);
-        -webkit-clip-path: polygon(0 0, 94% 0%, 52% 94%, 0% 100%) !important;
-        clip-path: polygon(0 0, 94% 0%, 52% 94%, 0% 100%) !important;
+        -webkit-clip-path: polygon(0 0, 84% 0%, 52% 94%, 0% 100%) !important;
+        clip-path: polygon(0 0, 84% 0%, 52% 94%, 0% 100%) !important;
         transform-origin: top right
     }
 }
@@ -171,7 +200,7 @@ body {
     }
     .masthead .masthead-content {
         padding-left: 3rem;
-        padding-right: 10rem
+        /*padding-right: 10rem*/
     }
     .masthead .masthead-content h1 {
         font-size: 3.5rem
@@ -216,25 +245,38 @@ body {
     }
 
     #menu-box{
-    text-align: left;
-    position:relative;
-    z-index:auto;
-    top:0px;
-    right:0px;
-    background-color: rgba(49,69,108,1);
-    padding:20px;
-    width:100%;
-    border-radius:0%;
-}
+        text-align: left;
+        position:relative;
+        z-index:auto;
+        top:0px;
+        right:0px;
+        background-color: rgba(49,69,108,1);
+        padding:10%;
+        width:100%;
+        border-radius:0%;
+    }
 
-.navbar-toggler{
-    z-index:100000;
-}
-#menu-box a{
-     color: #fff;
-     font-size: 16px;
-     font-weight: 700;
-}
+    .navbar-toggler{
+        z-index:100000;
+    }
+    #menu-box a{
+       color: #fff;
+       font-size: 16px;
+       font-weight: 700;
+   }
+
+   .clock{
+    display:none;
+    padding: 4%;
+    width:100%;
+    height:120px;
+        background-color: rgba(35,54,87,1);
+    position:relative;
+    color: #fff;
+    font-size: 80px;
+    text-align:center;
+    vertical-align:center;
+   }
 }
 
 

@@ -3,13 +3,14 @@
 // ======================================================================================
 // TRIVIA Query URLs
 // GIPHY Query URLs
-var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category + "&token=" + token;
+var category = 9;
+var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category;
 // user wins //user losses //best score
 // timer global var
 // game state
 
 
-// global quesiton count url: https://opentdb.com/api_count_global.php
+// global question count url: https://opentdb.com/api_count_global.php
 // cagetory question count url: https://opentdb.com/api_count.php?category=CATEGORY_ID_HERE
 // category lookup URL: https://opentdb.com/api_category.php
 
@@ -20,16 +21,28 @@ var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category 
 // ======================================================================================
 // Reset Scores
 // Reset DOM
-$.ajax({
-	url: queryURL,
-	method: "GET"
-}).done(function(categories) {
-	$.ajax({
-		url: queryURL,
-		method: "GET"
-	}).done(function(counts) {
 
-	}
+function reset(){
+	$.ajax({
+		url: "https://opentdb.com/api_category.php",
+		method: "GET",
+		success: function(response){
+			var obj = response.trivia_categories.length;
+			$("#categories").empty();
+			var allCategories = $(`<option value="">Wildcard</option>`);
+			$("#categories").append(allCategories);
+			
+			for (var i = 0; i < obj; i++) {
+				var newOpt = $(`<option value="${response.trivia_categories[i].id}">${response.trivia_categories[i].name}</option>`);
+				$("#categories").append(newOpt);
+			}
+		},
+		error: function(){
+			$("#categories").empty();
+			var error = $(`<option value="">Oops! Something's awry...  I'm on it.</option>`);
+			$("#categories").append(error);			
+		}
+	});
 }
 
 
@@ -39,7 +52,7 @@ $.ajax({
 // ON DOC LOAD ==========================================================================
 // ======================================================================================
 // reset game
-
+$(document).on("ready",reset());
 
 // ======================================================================================
 // PLAY =================================================================================
@@ -48,12 +61,33 @@ $.ajax({
 // populate giphy background
 // timer stuff
 
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).done(function(NYTData) {
-  	
-  }
+$("#play").on("click", function(){
+	category = $("#categories").val();
+	$("#game-play").empty();
+
+	timer = 100;
+	$(".clock").show();
+	$(".clock").html(timer);
+
+	 $.ajax({
+  	  	url: queryURLBase,
+  	  	method: "GET",
+  	  	success: function(response){
+  	  		for (var i = 0; i < 10; i++) {
+  	  			var tempDiv = $(`<div class="question">${response.results[i].question}</div><br>`);
+  	  			//create a new question in the dom
+  	  			// ${response.results[i].difficulty};
+  	  			// ${response.results[i].question};
+  	  			// ${response.results[i].correctAnswer};
+  	  			// ${response.results[i].incorrectAnswers};
+  	  			$("#game-play").append(tempDiv);
+  	  		}
+  	  	}
+  		}).done(function() {
+  	});
+
+});
+
 
 
 
@@ -96,139 +130,5 @@ $.ajax({
 
 
 
-
-
-
-
-
-
-// FUNCTIONS
-// ==========================================================
-
-// This runQuery function expects two parameters:
-// (the number of articles to show and the final URL to download data from)
-function runQuery(numArticles, queryURL) {
-
-  // The AJAX function uses the queryURL and GETS the JSON data associated with it.
-  // The data then gets stored in the variable called: "NYTData"
-
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).done(function(NYTData) {
-
-    // Logging the URL so we have access to it for troubleshooting
-    console.log("------------------------------------");
-    console.log("URL: " + queryURL);
-    console.log("------------------------------------");
-
-    // Log the NYTData to console, where it will show up as an object
-    console.log(NYTData);
-    console.log("------------------------------------");
-
-    // Loop through and provide the correct number of articles
-    for (var i = 0; i < numArticles; i++) {
-
-      // Add to the Article Counter (to make sure we show the right number)
-      articleCounter++;
-
-      // Create the HTML well (section) and add the article content for each
-      var wellSection = $("<div>");
-      wellSection.addClass("well");
-      wellSection.attr("id", "article-well-" + articleCounter);
-      $("#well-section").append(wellSection);
-
-      // Confirm that the specific JSON for the article isn't missing any details
-      // If the article has a headline include the headline in the HTML
-      if (NYTData.response.docs[i].headline !== "null") {
-        $("#article-well-" + articleCounter)
-          .append(
-            "<h3 class='articleHeadline'><span class='label label-primary'>" +
-            articleCounter + "</span><strong> " +
-            NYTData.response.docs[i].headline.main + "</strong></h3>"
-          );
-
-        // Log the first article's headline to console
-        console.log(NYTData.response.docs[i].headline.main);
-      }
-
-      // If the article has a byline include the headline in the HTML
-      if (NYTData.response.docs[i].byline && NYTData.response.docs[i].byline.original) {
-        $("#article-well-" + articleCounter)
-          .append("<h5>" + NYTData.response.docs[i].byline.original + "</h5>");
-
-        // Log the first article's Author to console.
-        console.log(NYTData.response.docs[i].byline.original);
-      }
-
-      // Then display the remaining fields in the HTML (Section Name, Date, URL)
-      $("#articleWell-" + articleCounter)
-        .append("<h5>Section: " + NYTData.response.docs[i].section_name + "</h5>");
-      $("#articleWell-" + articleCounter)
-        .append("<h5>" + NYTData.response.docs[i].pub_date + "</h5>");
-      $("#articleWell-" + articleCounter)
-        .append(
-          "<a href='" + NYTData.response.docs[i].web_url + "'>" +
-          NYTData.response.docs[i].web_url + "</a>"
-        );
-
-      // Log the remaining fields to console as well
-      console.log(NYTData.response.docs[i].pub_date);
-      console.log(NYTData.response.docs[i].section_name);
-      console.log(NYTData.response.docs[i].web_url);
-    }
-  });
-
-}
-
-// METHODS
-// ==========================================================
-
-// on.("click") function associated with the Search Button
-$("#run-search").on("click", function(event) {
-  // This line allows us to take advantage of the HTML "submit" property
-  // This way we can hit enter on the keyboard and it registers the search
-  // (in addition to clicks).
-  event.preventDefault();
-
-  // Initially sets the articleCounter to 0
-  articleCounter = 0;
-
-  // Empties the region associated with the articles
-  $("#well-section").empty();
-
-  // Grabbing text the user typed into the search input
-  searchTerm = $("#search-term").val().trim();
-  var searchURL = queryURLBase + searchTerm;
-
-  // Number of results the user would like displayed
-  numResults = $("#num-records-select").val();
-
-  // Start Year
-  startYear = $("#start-year").val().trim();
-
-  // End Year
-  endYear = $("#end-year").val().trim();
-
-  // If the user provides a startYear -- the startYear will be included in the queryURL
-  if (parseInt(startYear)) {
-    searchURL = searchURL + "&begin_date=" + startYear + "0101";
-  }
-
-  // If the user provides a startYear -- the endYear will be included in the queryURL
-  if (parseInt(endYear)) {
-    searchURL = searchURL + "&end_date=" + endYear + "0101";
-  }
-
-  // Then we will pass the final searchURL and the number of results to
-  // include to the runQuery function
-  runQuery(numResults, searchURL);
-});
-
-// This button clears the top articles section
-$("#clear-all").on("click", function() {
-  articleCounter = 0;
-  $("#well-section").empty();
-});
 
 
