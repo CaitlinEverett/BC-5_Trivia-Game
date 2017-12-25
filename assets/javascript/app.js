@@ -8,6 +8,7 @@ var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category;
 //correct answer count // user wins //user losses //best score
 var correctCount = 0;
 // timer global var
+var timer = 100;
 // game state
 
 
@@ -71,7 +72,7 @@ $(document).on("ready",reset());
     function decrement() {
       timer--;
       $(".clock").text(timer);
-      if (number === 0) {
+      if (timer === 0) {
         stop();
         $(".clock").text("Time is up!");
       }
@@ -150,6 +151,7 @@ $("#play").on("click", function(){
 					//change color of div + show 'success' message
 
 					//move question out of masthead column
+					$("#answered").append($(this).parent().parent());
 				} 
 			});
 		}
