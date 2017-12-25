@@ -145,7 +145,7 @@ $("#play").on("click", function(){
 				var p = $(this).attr("value");
 				var q = $(this).parent().parent().attr("value");
 				var obj = $(this).parent().parent();
-				
+
 				if (response.results[q].correct_answer == p){
 					//change correct answer count in var and dom
 					correctCount += 1;
@@ -153,8 +153,17 @@ $("#play").on("click", function(){
 					//change color of div + show 'success' message
 
 					//move question out of masthead column
-					$("#answered").append($(this).parent().parent());
-				} 
+					//$("#answered").append($(this).parent().parent());
+					$("#answered").append(obj);
+					obj.addClass("correct");
+					$(this).siblings().attr("disabled", true);
+					$(this).attr("disabled", true);
+				}else{
+					$("#answered").append(obj);
+					obj.addClass("incorrect");
+					$(this).siblings().attr("disabled", true);
+					$(this).attr("disabled", true);					
+				}
 			});
 		}
 	});
