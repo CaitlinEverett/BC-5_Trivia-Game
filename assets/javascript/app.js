@@ -150,16 +150,15 @@ $("#play").on("click", function(){
 					//change correct answer count in var and dom
 					correctCount += 1;
 
-					//change color of div + show 'success' message
-
 					//move question out of masthead column
-					//$("#answered").append($(this).parent().parent());
-					$("#answered").append(obj);
+					// *** With more time, I'd like to figure out how to animate this with keyframes
+					//change color of div + show 'success' message
+					$("#answered").prepend(obj);
 					obj.addClass("correct");
 					$(this).siblings().attr("disabled", true);
 					$(this).attr("disabled", true);
 				}else{
-					$("#answered").append(obj);
+					$("#answered").prepend(obj);
 					obj.addClass("incorrect");
 					$(this).siblings().attr("disabled", true);
 					$(this).attr("disabled", true);					
