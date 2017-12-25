@@ -5,7 +5,8 @@
 // GIPHY Query URLs
 var category = 9;
 var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category;
-// user wins //user losses //best score
+//correct answer count // user wins //user losses //best score
+var correctCount = 0;
 // timer global var
 // game state
 
@@ -36,6 +37,9 @@ function reset(){
 				var newOpt = $(`<option value="${response.trivia_categories[i].id}">${response.trivia_categories[i].name}</option>`);
 				$("#categories").append(newOpt);
 			}
+
+			correctCount = 0;
+			category = 9;
 		},
 		error: function(){
 			$("#categories").empty();
@@ -43,8 +47,7 @@ function reset(){
 			$("#categories").append(error);			
 		}
 	});
-}
-
+};
 
 
 
@@ -53,6 +56,32 @@ function reset(){
 // ======================================================================================
 // reset game
 $(document).on("ready",reset());
+
+
+// ======================================================================================
+// Timer Function ==========================================================================
+// ======================================================================================
+// for clock
+
+    function runTimer() {
+      intervalId = setInterval(decrement, 1000);
+    }
+
+    //  The decrement function.
+    function decrement() {
+      timer--;
+      $(".clock").text(timer);
+      if (number === 0) {
+        stop();
+        $(".clock").text("Time is up!");
+      }
+    }
+
+    //  The stop function
+    function stop() {
+      clearInterval(intervalId);
+    }
+
 
 // ======================================================================================
 // PLAY =================================================================================
@@ -68,40 +97,77 @@ $("#play").on("click", function(){
 	timer = 100;
 	$(".clock").show();
 	$(".clock").html(timer);
+	runTimer();
 
-	 $.ajax({
-  	  	url: queryURLBase,
-  	  	method: "GET",
-  	  	success: function(response){
-  	  		for (var i = 0; i < 10; i++) {
-  	  			var tempDiv = $(`<div class="question">${response.results[i].question}</div><br>`);
-  	  			//create a new question in the dom
-  	  			// ${response.results[i].difficulty};
-  	  			// ${response.results[i].question};
-  	  			// ${response.results[i].correctAnswer};
-  	  			// ${response.results[i].incorrectAnswers};
-  	  			$("#game-play").append(tempDiv);
-  	  		}
-  	  	}
-  		}).done(function() {
-  	});
+	$.ajax({
+		url: queryURLBase,
+		method: "GET",
+		success: function(response){
+			for (var i = 0; i < 10; i++) {
+
+  	  			//store correct answer
+  	  			var correctAnswer = response.results[i].correctAnswer;
+
+  	  			//create html for each q/a segment
+  	  			var question = $(`<div class="question" value="${i}"><span class="quest-text">${response.results[i].question}</span></div><br>`);
+  	  			var radioButtons = $(`<form></form>`);
+
+  	  			//make single list of answers 
+  	  			var answers = response.results[i].incorrect_answers.concat(response.results[i].correct_answer);
+
+  	  			//sort answers in random order
+  	  			answers.sort(function(a, b){return (answers.length/10) - Math.random()});
+
+				//add radio buttons
+				for (var j = 0; j < answers.length; j++) {
+					var rb = $(`<input class="radio" type="radio" name="radanswer" id="${j}" value="${answers[j]}">${answers[j]}</input>`);
+					radioButtons.append(rb);
+				};
+
+				question.append(radioButtons);
+
+				$("#game-play").append(question);
+			};
+
+			// ======================================================================================
+			// ON ANSWER ============================================================================
+			// ======================================================================================
+			// when user answers a question, move it into side div
+			// update score
+
+
+			// ======================================================================================
+			// I feel like there has got to be a much more elegant way to do this ($(this).parent().parent()... below)
+
+			$(".radio").on("click", function(event){
+				//set up validity check - find which question to look at
+				var p = $(this).attr("value");
+				var q = $(this).parent().parent().attr("value");
+				if (response.results[q].correct_answer == p){
+					//change correct answer count in var and dom
+					correctCount += 1;
+
+					//change color of div + show 'success' message
+
+					//move question out of masthead column
+				} 
+			});
+		}
+	});
 
 });
 
 
 
 
-// ======================================================================================
-// ON ANSWER ============================================================================
-// ======================================================================================
-// when user answers a question, move it into side div
-// update score
+
 
 
 // ======================================================================================
 // ON PASS / SKIP QUESTION ==============================================================
 // ======================================================================================
 // when user presses 'SKIP QUESTION', rotate to another question
+// will hope to write this in later
 
 
 // ======================================================================================

@@ -98,6 +98,21 @@ body {
     padding: 1rem
 }
 
+.question{
+    font-size:1.2em;
+    font-family: "Source Sans Pro";
+     /*font-weight:700;*/
+}
+
+input[type=checkbox], input[type=radio] {
+    margin: 10px 10px 5px 10px;
+    font-weight:200;
+}
+
+.quest-text{
+font-weight: 500 !important;
+}
+
 .social-icons ul {
     margin-top: 2rem
 }
