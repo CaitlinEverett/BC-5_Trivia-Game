@@ -110,7 +110,7 @@ $("#play").on("click", function(){
   	  			var correctAnswer = response.results[i].correctAnswer;
 
   	  			//create html for each q/a segment
-  	  			var question = $(`<div class="question" value="${i}"><span class="quest-text">${response.results[i].question}</span></div><br>`);
+  	  			var question = $(`<div class="question" value="${i}"><span class="quest-text">${response.results[i].question}</span></div>`);
   	  			var radioButtons = $(`<form></form>`);
 
   	  			//make single list of answers 
@@ -144,6 +144,8 @@ $("#play").on("click", function(){
 				//set up validity check - find which question to look at
 				var p = $(this).attr("value");
 				var q = $(this).parent().parent().attr("value");
+				var obj = $(this).parent().parent();
+				
 				if (response.results[q].correct_answer == p){
 					//change correct answer count in var and dom
 					correctCount += 1;
