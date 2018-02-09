@@ -2,15 +2,23 @@
 // SETUP VARIABLES ======================================================================
 // ======================================================================================
 // TRIVIA Query URLs
-// GIPHY Query URLs
 var category = 9;
 var queryURLBase = "https://opentdb.com/api.php?amount=10&category=" + category;
+
+//variable for query results
+var set = "";
+var setObj = {};
+
+//variable for keeping track of which question is being shown
+var counter = 0;
 //correct answer count // user wins //user losses //best score
 var correctCount = 0;
 // timer global var
 var timer = 100;
 // game state
 
+// GIPHY Query URLs
+//
 
 // global question count url: https://opentdb.com/api_count_global.php
 // cagetory question count url: https://opentdb.com/api_count.php?category=CATEGORY_ID_HERE
@@ -39,8 +47,6 @@ function reset(){
 				$("#categories").append(newOpt);
 			}
 
-			correctCount = 0;
-			category = 9;
 		},
 		error: function(){
 			$("#categories").empty();
@@ -60,29 +66,112 @@ $(document).on("ready",reset());
 
 
 // ======================================================================================
-// Timer Function ==========================================================================
+// Timer Functions ==========================================================================
 // ======================================================================================
 // for clock
 
-    function runTimer() {
-      intervalId = setInterval(decrement, 1000);
-    }
+function runTimer() {
+	intervalId = setInterval(decrement, 1000);
+};
 
-    //  The decrement function.
-    function decrement() {
-      timer--;
-      $(".clock").text(timer);
-      if (timer === 0) {
-        stop();
-        $(".clock").text("Time is up!");
-      }
-    }
+//  The decrement function.
+function decrement() {
+	timer--;
+	$(".clock").text(timer);
+	if (timer === 0) {
+		stop();
+		$(".clock").text("Time is up!");
+	};
+};
 
-    //  The stop function
-    function stop() {
-      clearInterval(intervalId);
-    }
+//  The stop function
+function stop() {
+	clearInterval(intervalId);
+};
 
+
+// ======================================================================================
+// Ajax Pull Data Functions ==========================================================================
+// ======================================================================================
+// for trivia questions 
+function pullTrivia(){
+	$.ajax({
+		url: queryURLBase,
+		method: "GET",
+		success: function(response){
+			set = JSON.stringify(response);
+		}
+	}).done(function(response) {
+   			setObj  = JSON.parse(set);
+  });
+};
+
+// ======================================================================================
+// Show a question ==========================================================================
+// ======================================================================================
+// adds question to DOM
+function QA(){
+
+	//store correct answer
+	var correctAnswer = setObj.results[counter].correctAnswer;
+
+	//create html for each q/a segment
+	var question = $(`<div class="question" value="${counter}"><span class="quest-text">${response.results[i].question}</span></div>`);
+	var radioButtons = $(`<form></form>`);
+
+	//make single list of answers 
+	var answers = set.results[counter].incorrect_answers.concat(set.results[counter].correct_answer);
+
+	//sort answers in random order
+	answers.sort(function(a, b){return (answers.length/10) - Math.random()});
+
+	//add radio buttons
+	for (var j = 0; j < answers.length; j++) {
+		var rb = $(`<input class="radio" type="radio" name="radanswer" id="${j}" value="${answers[j]}">${answers[j]}</input>`);
+		radioButtons.append(rb);
+	};
+
+	question.append(radioButtons);
+
+	$("#game-play").append(question);
+
+	// ======================================================================================
+	// ON ANSWER ============================================================================
+	// ======================================================================================
+	// when user answers a question, move it into side div
+	// update score
+
+
+	// *******************************************************************************************************
+	// I feel like there has got to be a much more elegant way to do this ($(this).parent().parent()... below)
+
+	$(".radio").on("click", function(event){
+		//set up validity check - find which question to look at
+		var p = $(this).attr("value");
+		var q = $(this).parent().parent().attr("value");
+		var obj = $(this).parent().parent();
+
+		if (response.results[q].correct_answer == p){
+			//change correct answer count in var and dom
+			correctCount += 1;
+
+			//move question out of masthead column
+			// *** With more time, I'd like to figure out how to animate this with keyframes
+			//change color of div + show 'success' message
+			$("#answered").prepend(obj);
+			obj.addClass("correct");
+			$(this).siblings().attr("disabled", true);
+			$(this).attr("disabled", true);
+		}else{
+			$("#answered").prepend(obj);
+			obj.addClass("incorrect");
+			$(this).siblings().attr("disabled", true);
+			$(this).attr("disabled", true);					
+		};
+
+		counter ++;
+	});
+};
 
 // ======================================================================================
 // PLAY =================================================================================
@@ -100,77 +189,15 @@ $("#play").on("click", function(){
 	$(".clock").html(timer);
 	runTimer();
 
-	$.ajax({
-		url: queryURLBase,
-		method: "GET",
-		success: function(response){
-			for (var i = 0; i < 10; i++) {
-
-  	  			//store correct answer
-  	  			var correctAnswer = response.results[i].correctAnswer;
-
-  	  			//create html for each q/a segment
-  	  			var question = $(`<div class="question" value="${i}"><span class="quest-text">${response.results[i].question}</span></div>`);
-  	  			var radioButtons = $(`<form></form>`);
-
-  	  			//make single list of answers 
-  	  			var answers = response.results[i].incorrect_answers.concat(response.results[i].correct_answer);
-
-  	  			//sort answers in random order
-  	  			answers.sort(function(a, b){return (answers.length/10) - Math.random()});
-
-				//add radio buttons
-				for (var j = 0; j < answers.length; j++) {
-					var rb = $(`<input class="radio" type="radio" name="radanswer" id="${j}" value="${answers[j]}">${answers[j]}</input>`);
-					radioButtons.append(rb);
-				};
-
-				question.append(radioButtons);
-
-				$("#game-play").append(question);
-			};
-
-			// ======================================================================================
-			// ON ANSWER ============================================================================
-			// ======================================================================================
-			// when user answers a question, move it into side div
-			// update score
-
-
-			// ======================================================================================
-			// I feel like there has got to be a much more elegant way to do this ($(this).parent().parent()... below)
-
-			$(".radio").on("click", function(event){
-				//set up validity check - find which question to look at
-				var p = $(this).attr("value");
-				var q = $(this).parent().parent().attr("value");
-				var obj = $(this).parent().parent();
-
-				if (response.results[q].correct_answer == p){
-					//change correct answer count in var and dom
-					correctCount += 1;
-
-					//move question out of masthead column
-					// *** With more time, I'd like to figure out how to animate this with keyframes
-					//change color of div + show 'success' message
-					$("#answered").prepend(obj);
-					obj.addClass("correct");
-					$(this).siblings().attr("disabled", true);
-					$(this).attr("disabled", true);
-				}else{
-					$("#answered").prepend(obj);
-					obj.addClass("incorrect");
-					$(this).siblings().attr("disabled", true);
-					$(this).attr("disabled", true);					
-				}
-			});
-		}
-	});
+	//while (timer > 0){
+		pullTrivia();
+		while (counter < 9) {
+			QA(counter);
+		};
+	//};
+	
 
 });
-
-
-
 
 
 
@@ -180,6 +207,8 @@ $("#play").on("click", function(){
 // ======================================================================================
 // when user presses 'SKIP QUESTION', rotate to another question
 // will hope to write this in later
+
+///functionality for a later iteration
 
 
 // ======================================================================================
